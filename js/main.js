@@ -26,11 +26,12 @@ var lights = {
 $(document).ready( startApp );
 function startApp(){
     createLights( lights );
+    $("#startSeriesButton").click( startLightToggle );
 }
 
-function createLights( AllLightData ){
-    for( var id in AllLightData ){
-        var element = createLightDomElement( AllLightData[id].colors.off);
+function createLights( allLightData ){
+    for( var id in allLightData ){
+        var element = createLightDomElement( allLightData[id].colors.off);
         $("body").append(element);
     }
 }
@@ -43,4 +44,9 @@ function createLightDomElement( currentColor ){
         }
     });
     return lightDomElement;
+}
+
+function startLightToggle(){
+    var targetLight = 0;
+
 }
