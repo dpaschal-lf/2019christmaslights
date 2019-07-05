@@ -44,8 +44,12 @@ var lights = {
 $(document).ready( startApp );
 function startApp(){
     createLights( lights );
-    // $("#startSeriesButton").click( startLightToggle );
-    initiateLightSequenceForAllLights( lights );
+    $("#startSeriesButton").click( function(){
+        initiateLightSequenceForAllLights( lights );
+    } );
+    $("#stopSeriesButton").click( function(){
+        stopLightSequenceForAllLights( lights );
+    } );
 }
 
 function createLights( allLightData ){
@@ -87,4 +91,14 @@ function alternateLight( light ){
     var nextColor = availableColors[ light.currentState ];
     light.domElement.css('background-color', nextColor );
     triggerTransitionWaitTime( light);
+}
+function stopLightSequenceForAllLights( lightList ){
+    for( var id in lightList){
+        stopLight( lightList[id] );
+    }
+}
+
+function stopLight( light ){
+    clearTimeout( light.timer );
+    light.timer = null;
 }
