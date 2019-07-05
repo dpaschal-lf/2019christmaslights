@@ -9,7 +9,10 @@ var lights = {
             off: 'pink'
         },
         timer: null,
-        transitionTime: 1000
+        transitionTime: {
+            on: 1000,
+            off: 2000
+        }
     },
     1: {
         domElement: null,
@@ -19,7 +22,10 @@ var lights = {
             off: 'lightblue'
         },
         timer: null,
-        transitionTime: 500
+        transitionTime: {
+            on: 2000,
+            off: 1000
+        }
     },
     2: {
         domElement: null,
@@ -29,7 +35,10 @@ var lights = {
             off: 'lightgreen'
         },
         timer: null,
-        transitionTime: 1200
+        transitionTime: {
+            on: 1000,
+            off: 250
+        }
     }
 }
 $(document).ready( startApp );
@@ -59,22 +68,23 @@ function createLightDomElement( currentColor ){
 
 function initiateLightSequenceForAllLights( lightList ){
     for( var id in lightList){
-        var timerDuration = lightList[id].transitionTime;
-        var timer = setInterval( alternateLight, timerDuration, id);
-        lightList[id].timer = timer;
-
+        triggerTransitionWaitTime( lightList[id] );
     }
-
+}
+function triggerTransitionWaitTime( light ){
+    var timerDuration = light.transitionTime[ light.currentState ];
+    var timer = setTimeout( alternateLight, timerDuration, light);
+    light.timer = timer;    
 }
 
-function alternateLight( id ){
+function alternateLight( light ){
     var conversionObject = {
         'on':'off',
         'off':'on'
     }
-    var targetLight = lights[id]
-    targetLight.currentState = conversionObject[ targetLight.currentState ];
-    var availableColors = targetLight.colors;
-    var nextColor = availableColors[ targetLight.currentState ];
-    targetLight.domElement.css('background-color', nextColor );
+    light.currentState = conversionObject[ light.currentState ];
+    var availableColors = light.colors;
+    var nextColor = availableColors[ light.currentState ];
+    light.domElement.css('background-color', nextColor );
+    triggerTransitionWaitTime( light);
 }
